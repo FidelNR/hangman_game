@@ -1,0 +1,19 @@
+*{
+    background-color: aquamarine;
+    font-family:fantasy;
+}
+.wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tittles{
+    text-align: center;
+    justify-content: center;
+}
+
+.pista{
+    border-color: yellow;
+    background-color: brown;
+}
