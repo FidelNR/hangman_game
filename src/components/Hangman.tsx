@@ -1,6 +1,6 @@
 import { useState,useEffect } from "react";
 import "../css/style.css";
-import Welcome from "./Welcome";
+//import Welcome from "./Welcome";
 
 interface HangmanProps{
     words_props:string[];
@@ -45,7 +45,7 @@ const Hangman = ({words_props,errorCount,setErrorCount}:HangmanProps)=>{
     const [guessedLetters, setGuessedLetters]= useState<string[]>([]);
     
 
-    const displayWord= selectedWord.split('').map((letter,index) =>{
+    const displayWord= selectedWord.split('').map((letter) =>{
         console.log("selectedWord: ", selectedWord)
         if (guessedLetters.includes(letter)){
             console.log("guessedLetters",guessedLetters)
