@@ -1,23 +1,49 @@
-import { useState, useTransition } from "react";
- import "../css/style.css";
+import { useState,useEffect } from "react";
+import "../css/style.css";
+import Welcome from "./Welcome";
 
 interface HangmanProps{
     words_props:string[];
+    errorCount:number;
+    setErrorCount:(count: number) => void;
 }
 
 
 
-const Hangman = ({words_props}:HangmanProps)=>{
+const Hangman = ({words_props,errorCount,setErrorCount}:HangmanProps)=>{
 
     const [gameStarted, setGameStarted] = useState(false);
 
     const startGame = () => {
         setGameStarted(true);
     };
+    //RELOJ
+    const [seconds, setSeconds] = useState(0)
+    const [minutes, setMinutes] = useState(0)
+
+  useEffect(() => {
+    if(gameStarted){
+    const key = setInterval(() => {
+      // Incrementar los segundos
+      setSeconds(prevSeconds => prevSeconds + 1)
+
+      // Si los segundos llegan a 60, reiniciarlos y aumentar los minutos
+      if (seconds === 59) {
+        setSeconds(0)
+        setMinutes(prevMinutes => prevMinutes + 1)
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(key);
+    };
+    }
+  }, [seconds,gameStarted]); // Dependencia de segundos 
+    //************************
 
     const [selectedWord, setSelectedWord]= useState(words_props[0]);
     const [guessedLetters, setGuessedLetters]= useState<string[]>([]);
-    const [errorCount, setErrorCount]= useState(0);
+    
 
     const displayWord= selectedWord.split('').map((letter,index) =>{
         console.log("selectedWord: ", selectedWord)
@@ -34,7 +60,7 @@ const Hangman = ({words_props}:HangmanProps)=>{
         if (!guessedLetters.includes(letter)){
             setGuessedLetters([...guessedLetters,letter]);
             if (!selectedWord.includes(letter)){
-                setErrorCount((prev)=> prev + 1);
+                setErrorCount(errorCount + 1);
                 console.log("setErrorCount: ", setErrorCount)
             }
         }    
@@ -54,11 +80,14 @@ const Hangman = ({words_props}:HangmanProps)=>{
                 <button className="button_start" onClick={startGame}>Comenzar</button>
             ) : (
                 <div className="contenido">
+                    <p>
+                        {minutes < 10 ? `0${minutes}` : minutes} : {seconds < 10 ? `0${seconds}` : seconds} have passed!!
+                    </p>
                     {
                         <div>
                         <><p>{displayWord.join(' ')}</p><input maxLength={1} onChange={(e) => handleGuess(e.target.value)} /></>
                         {
-                        (displayWord.join('') === selectedWord || errorCount >5) &&
+                        (displayWord.join('') === selectedWord || errorCount >7) &&
                          (
                             <button onClick={() =>{
                                 restartGame();

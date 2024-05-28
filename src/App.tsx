@@ -1,5 +1,6 @@
 import Welcome from './components/Welcome';
 import Hangman from './components/Hangman';
+import { useState } from 'react';
 
 const frutas= ['apple', 'banana', 'cherry', 'date','fig', 'grape', 'kiwi'];
 const herramienta= ['desarmador', 'martillo', 'sierra', 'tubo','cincel', 'pinzas', 'llave'];
@@ -11,12 +12,12 @@ const cocina= ['olla', 'cucharon', 'vaso', 'plato','casuela', 'licuadora', 'tost
 const palabras = [frutas, herramienta, objeto, juguetes, cocina];
 const palabras_mandar = Math.floor(Math.random() * palabras.length);
 function App(){
-
+  const [errorCount, setErrorCount] = useState<number>(0);
 
   return(
     <div className='App'>
-      <Welcome palabra = {palabras_mandar}/>
-      <Hangman words_props={palabras[palabras_mandar]}/>
+      <Welcome palabra={palabras_mandar} errorCount={errorCount}/>
+      <Hangman words_props={palabras[palabras_mandar]} errorCount={errorCount} setErrorCount={setErrorCount}/>
     </div>
   );
 };
